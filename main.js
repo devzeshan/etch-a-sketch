@@ -1,14 +1,10 @@
 const gridCanvas = 600;
-let gridRows = 16;
-let gridCols = 16;
+let squaresPerSide = 16;
 
 const sketchArea = document.querySelector("#sketch-area");
 const sliderContainer = document.querySelector("#slider-container")
 const slider = document.querySelector("#slider");
-sketchArea.style.width = `${gridCanvas}px`;
-sketchArea.style.height = `${gridCanvas}px`;
 const sliderValue = document.querySelector("#slider-value");
-
 
 sliderValue.textContent = `${slider.value} x ${slider.value} (Canvas)`;
 sketchArea.style.width = sketchArea.style.height = `${gridCanvas}px`;
@@ -17,7 +13,7 @@ function setBackgroundColor() {
     this.style.backgroundColor = "black";
 }
 
-function createGridCells() {
+function createGridCells(squaresPerSide) {
     const numOfSquares = (squaresPerSide * squaresPerSide);
     const widthOrHeight = `${(gridCanvas / squaresPerSide) - 2}px`
 
@@ -35,8 +31,15 @@ function createGridCells() {
 
 function removeGridCells() {
     while (sketchArea.firstChild) {
-        sketchArea.removeChild(sketchArea, firstChild);
+        sketchArea.removeChild(sketchArea.firstChild);
     }
 }
 
-createGridCells();
+slider.oninput = function () {
+    let txt = `${this.value} x ${this.value} (Resolution)`;
+    sliderValue.innerHTML = txt;
+    removeGridCells();
+    createGridCells(this.value);
+}
+
+createGridCells(16);
